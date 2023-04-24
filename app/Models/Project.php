@@ -12,6 +12,8 @@ class Project extends Model
 
     protected $fillable = ["name","type_id", "technology","description","url","image"];
 
+    protected $with = ['type', 'technologies'];
+
     // relations
 
     public function technologies(){
