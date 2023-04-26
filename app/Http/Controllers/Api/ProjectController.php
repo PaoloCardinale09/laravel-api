@@ -13,7 +13,11 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all() ;
+        $projects = Project::orderBy('updated_at', 'DESC')->paginate(6);
+
+        foreach($projects as $project) {
+            if ($project->image) $project->image = url('storage/'. $project->image);
+        }
             
         return response()->json($projects);
 
