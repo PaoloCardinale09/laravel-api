@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewProjectAddMail;
 use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -75,6 +78,14 @@ class ProjectController extends Controller
         $project->save();
 
         if(Arr::exists($data, "technologies" )) $project->technologies()->attach($data["technologies"]);
+
+        $mail = new NewProjectAddMail();
+        
+        $user_email = Auth::user()->email;
+
+        Mail::to($user_email)->send($mail);
+
+        
        
 
         return to_route('admin.projects.show', $project)
@@ -141,6 +152,12 @@ class ProjectController extends Controller
         if(Arr::exists($data, "technologies" )) $project->technologies()->sync($data["technologies"]);
         else 
         $project->technologies()->detach();
+
+        $mail = new NewProjectAddMail($project);
+        
+        $user_email = Auth::user()->email;
+
+        Mail::to($user_email)->send($mail);
         
         return redirect()->route('admin.projects.show', $project)
         ->with('message_content', "Project $project->id creato con successo");

@@ -25,6 +25,6 @@ class Project extends Model
     }
 
     public function getImageUri() {
-        return $this->image ? asset('storage/' .$this->image) : 'https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg';
+        return $this->image ? url('storage/' .$this->image) : 'https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg';
     }
 }
